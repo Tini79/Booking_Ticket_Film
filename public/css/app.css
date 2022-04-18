@@ -1,0 +1,6 @@
+.brand-logo{font-size: 24px;}
+.icons, .brand-logo{color:#FFF}
+.brand-logo{text-decoration: none;}
+.clickable-link{color: rgba(0, 0, 0, .5)}
+.sub-brand-logo, .clickable-link:hover, .brand-logo:hover, .sub-brand-logo:hover, .icons:hover{color: #ffc800;}
+.sub-brand-logo{font-style:italic;}
