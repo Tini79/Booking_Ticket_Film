@@ -28,15 +28,26 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        if(Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-        return redirect()->intended('/datafilms');
-        }
+        // if(Auth::attempt($credentials)) {
+        //     $request->session()->regenerate();
+        // return redirect()->intended('/datafilms');
+        // }
 
-        return back();
+        // return back();
+
+        if(Auth::attempt($credentials)) {
+            if(auth()->user()->is_admin == 1) {
+                $request->session()->regenerate();
+                return redirect()->intended('/dashboardadmin');
+            } else {
+                $request->session()->regenerate();
+                return redirect()->intended('/');
+            }
+        } 
+        return back(); 
     }
     
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
 

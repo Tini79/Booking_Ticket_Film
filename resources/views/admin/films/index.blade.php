@@ -32,11 +32,13 @@
            <td>{!! $n->description !!}</td>
            <td>Rp{{ number_format($n->price,0,",",".");}}</td>
            <td>
+               <a href="/datafilms/{{ $n->id }}" class="btn btn-light btn-outline-dark btn-sm"><i class="fa-solid fa-eye"></i></a>
                 <form action="/datafilms/{{ $n->id }}" method="post">
                     <a href="/datafilms/{{ $n->id }}/edit" class="btn btn-dark btn-sm"><i class="fa-solid fa-pen"></i></a>
                     @csrf
                     @method('delete')
-                   <button class="btn btn-sm btn-light btn-outline-dark" onClick="return confirm('Yakin hapus data ?') == true"><i class="fa-solid fa-trash-can"></i></button>
+                   <button class="btn btn-sm 
+                   btn-danger" onClick="return confirm('Yakin hapus data ?') == true"><i class="fa-solid fa-trash-can"></i></button>
                 </form>
            </td>
         </tr>

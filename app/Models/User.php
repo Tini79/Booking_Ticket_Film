@@ -19,6 +19,13 @@ class User extends Authenticatable
      */
     protected $guarded = ['id'];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            return $query->where('title', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%')->orWhere('price', 'like', '%' . $search . '%');
+        });
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -17,7 +17,7 @@ class FilmController extends Controller
     {
         return view('/admin.films.index', [
             'title' => 'Data Film',
-            'films' => Film::latest()->filter(request(['search']))->paginate(1)
+            'films' => Film::latest()->filter(request(['search']))->paginate(10)
         ]);
     }
 
@@ -44,8 +44,13 @@ class FilmController extends Controller
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
+            'img' => 'image|file|max:1024',
             'price' => 'required'
         ]);
+
+        if($request->file('img')) {
+            $validatedData['img'] = $request->file('img')->store('post-image');
+        }
 
         $validatedData['excerpt'] = Str::limit(strip_tags($request->description), 100);
 
@@ -60,9 +65,14 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Film $film, $id)
     {
-        //
+        $film = Film::find($id);
+
+        return view('admin.films.show', [
+            'title' => 'Dashboard Film',
+            'film' => $film
+        ]);
     }
 
     /**
@@ -105,6 +115,7 @@ class FilmController extends Controller
         $film->update([
             'title' => $request->title,
             'description' => $request->description,
+            'price' => $request->price,
         ]);
 
         return redirect('/datafilms');

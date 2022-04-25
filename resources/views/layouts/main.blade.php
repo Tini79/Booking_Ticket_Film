@@ -45,9 +45,13 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Dashboard</a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="/dashboardadmin">Data Admin</a></li>
-                    <li><a class="dropdown-item" href="/datafilms">Data Film</a></li>
-                    <li><a class="dropdown-item" href="/datausers">Data User</a></li>
+                    <li><a href="/myaccount" class="dropdown-item">My Account</a></li>
+                    @can('admin')
+                    <li><a href="/dashboardadmin" class="dropdown-item">Dashboard Admin</a></li>
+                    <li><a href="/dataadmins" class="dropdown-item">Data Admin</a></li>
+                    <li><a href="/datafilms" class="dropdown-item">Data Film</a></li>
+                    <li><a href="/datausers" class="dropdown-item">Data User</a></li>
+                    @endcan
                     <li><hr class="dropdown-divider"></li>
                     <li>
                       <form action="/logout" method="post">
@@ -62,7 +66,6 @@
           </div>
       </div>
     </nav>
-
     <div class="container">
       @yield('content')
     </div>

@@ -27,7 +27,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('/admin.users.create', [
+            'title' => 'Data User'
+        ]);
     }
 
     /**
@@ -38,7 +40,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'fullname' => 'max:255',
+            'username' => 'unique:users|min:3|max:255',
+            'email' => 'email|unique:users',
+            'phone' => 'unique:users',
+            'password' => 'min:5|max:255'
+        ]);
+        
+        $validatedData['password'] = bcrypt($validatedData['password']);
+
+        User::create($validatedData);
+
+        return redirect('/datausers');
     }
 
     /**
@@ -60,7 +74,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        return view('/admin.users.edit', [
+            'title' => 'Data User',
+            'user' => $user
+        ]);
     }
 
     /**
@@ -72,7 +91,28 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        $request->validate([
+            'fullname' => 'max:255',
+            'username' => 'unique:users|min:3|max:255',
+            'email' => 'email|unique:users',
+            'phone' => 'unique:users',
+            'password' => 'min:5|max:255'
+        ]);
+        
+        if($request->username != $user->username)
+        $request->validate(['username' => 'required|unique:users']);
+
+        $user->update([
+            'username' => $request->username,
+            'description' => $request->description,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+        ]);
+
+        return redirect('/datausers');
     }
 
     /**
@@ -83,6 +123,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::destroy($id);
+
+        return redirect('/datausers')->with('success', 'Berhasil hapus data!');
     }
 }

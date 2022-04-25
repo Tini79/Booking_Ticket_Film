@@ -1,6 +1,8 @@
 @extends('layouts.main')
 @section('content')
 <section class="page-section">
+<h1>Edit Film</h1>
+<hr>
 <form action="/datafilms/{{ $film->id }}" method="post" class="mt-3">
     @csrf
     @method('PATCH')
@@ -13,6 +15,16 @@
             </div>
         @enderror
     </div>
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Film Image</label>
+        <input name="img" class="form-control @error('img') is-invalid @enderror" type="file" id="formFile">
+        @error('img')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </div>
+
     <div class="mb-2">
         <label for="description">Description</label>
         @error('description')
@@ -30,8 +42,8 @@
             </div>
         @enderror
     </div>
-    <button class="btn btn-success">Save</button>
-    <a href="/datafilms" class="btn btn-danger">Back</a>
+    <button class="btn btn-dark">Save</button>
+    <a href="/datafilms" class="btn btn-light btn-outline-dark">Back</a>
 </form>
 </section>
 @endsection
