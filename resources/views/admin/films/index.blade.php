@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.certain')
 
 @section('content')
 <section class="page-section">
@@ -14,39 +14,42 @@
         </form>
     </div>
     <hr>
-<table class="table">
-    <thead class="bg-dark text-light">
-        <tr>
-            <td scope="col-1">No.</td>
-            <td scope="col">Movie</td>
-            <td scope="col-5">Description</td>
-            <td scope="col">Price</td>
-            <td scope="col">Action</td>
-        </tr>
-    </thead>
-    @foreach ( $films as $film => $n )
-    <tbody>
-        <tr>
-           <td>{{ $film + 1 }}.</td>
-           <td>{{ $n->title }}</td>
-           <td>{!! $n->description !!}</td>
-           <td>Rp{{ number_format($n->price,0,",",".");}}</td>
-           <td>
-               <a href="/datafilms/{{ $n->id }}" class="btn btn-light btn-outline-dark btn-sm"><i class="fa-solid fa-eye"></i></a>
-                <form action="/datafilms/{{ $n->id }}" method="post">
-                    <a href="/datafilms/{{ $n->id }}/edit" class="btn btn-dark btn-sm"><i class="fa-solid fa-pen"></i></a>
-                    @csrf
-                    @method('delete')
-                   <button class="btn btn-sm 
-                   btn-danger" onClick="return confirm('Yakin hapus data ?') == true"><i class="fa-solid fa-trash-can"></i></button>
-                </form>
-           </td>
-        </tr>
-    </tbody>
-    @endforeach
-</table>
-<div class="d-flex justify-content-end">
-    {{ $films->links() }}
-</div>
+    <table class="table">
+        <thead class="bg-dark text-light">
+            <tr>
+                <td scope="col" class="">No.</td>
+                <td scope="col" class="">Movie</td>
+                <td scope="col" class="">Status</td>
+                <td scope="col" class="">Schedule</td>
+                <td scope="col" class="">Ticket/Seat</td>
+                <td scope="col" class="">Price</td>
+                <td scope="col" class="">Action</td>
+            </tr>
+        </thead>
+        @foreach ( $films as $film => $n )
+        <tbody>
+            <tr>
+                <td>{{ $film + 1 }}.</td>
+                <td>{{ $n->title }}</td>
+                <td>{{ $n->status->status }}</td>
+                <td>{{ $n->date }}, {{ $n->time }} WIB</td>
+                <td>{{ $n->ticketAvailable }}/{{ $n->seatAvailable }}</td>
+                <td>Rp{{ number_format($n->price,0,",",".");}}</td>
+                <td>
+                    <a href="/datafilms/{{ $n->id }}" class="btn btn-light btn-outline-dark btn-sm d-inline"><i class="fa-solid fa-eye"></i></a>
+                        <form action="/datafilms/{{ $n->id }}" class="d-inline" method="post">
+                            <a href="/datafilms/{{ $n->id }}/edit" class="btn btn-dark btn-sm"><i class="fa-solid fa-pen"></i></a>
+                            @csrf
+                            @method('delete')
+                            <button class="btn btn-sm btn-danger" onClick="return confirm('Yakin hapus data ?') == true"><i class="fa-solid fa-trash-can"></i></button>
+                        </form>
+                </td>
+            </tr>
+        </tbody>
+        @endforeach
+    </table>
+    <div class="d-flex justify-content-end">
+        {{ $films->links() }}
+    </div>
 </section>
 @endsection('content')

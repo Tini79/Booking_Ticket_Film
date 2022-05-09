@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use  Illuminate\Support\Facades\Hash;
+use App\Models\Film;
 
-class AdminController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        
-        return view('admin.admins.index', [
-            'title' => 'Data Admin',
-            'admins' => User::latest()->filter(request(['search']))->paginate(10)
-        ]);
+        //
     }
 
     /**
@@ -29,9 +24,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.dashboard.create', [
-            'title' => 'Dashboard Admin'
-        ]);
+        //
     }
 
     /**
@@ -42,23 +35,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'fullname' => 'required',
-            'username' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'password' => 'required'
-        ]);
-
-        User::create([
-            'fullname' => $request->fullname,
-            'username' => $request->username,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),            
-        ]);
-
-        return redirect('/dashboardadmin');
+        //
     }
 
     /**
@@ -103,8 +80,6 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
-
-        return redirect('/dashboardadmin')->with('success', 'Berhasil hapus data!');
+        //
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Film;
+use App\Models\Status;
+use App\Models\Genre;
 use Illuminate\Support\Str;
 
 class FilmController extends Controller
@@ -17,7 +19,8 @@ class FilmController extends Controller
     {
         return view('/admin.films.index', [
             'title' => 'Data Film',
-            'films' => Film::latest()->filter(request(['search']))->paginate(10)
+            'films' => Film::latest()->filter(request(['search']))->paginate(10),
+            'statuses' => Status::all()
         ]);
     }
 
@@ -29,7 +32,8 @@ class FilmController extends Controller
     public function create()
     {
         return view('/admin.films.create', [
-            'title' => 'Data Film'
+            'title' => 'Data Film',
+            'statuses' => Status::all() 
         ]);
     }
 
@@ -42,9 +46,14 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'img' => 'image|file|max:1024',
+            'title' => 'required|max:225',
+            'img' => 'image|file|max:3000',
+            'description' => 'required|min:100|max:10000',
+            'ticketAvailable' => 'required',
+            'seatAvailable' => 'required',
+            'status_id' => 'required',
+            'date' => 'required',
+            'time' => 'required',
             'price' => 'required'
         ]);
 
@@ -65,13 +74,14 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Film $film, $id)
+    public function show(Film $film, Genre $genre, $id)
     {
         $film = Film::find($id);
 
-        return view('admin.films.show', [
+        return view('admin.films.show', compact('film', 'genre'), [
             'title' => 'Dashboard Film',
             'film' => $film
+
         ]);
     }
 
@@ -87,7 +97,8 @@ class FilmController extends Controller
 
         return view('/admin.films.edit', [
             'title' => 'Data Film',
-            'film' => $film
+            'film' => $film,
+            'statuses' => Status::all() 
         ]);
     }
     
@@ -104,18 +115,36 @@ class FilmController extends Controller
         $film = Film::find($id);
 
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'price' => 'required'
+            'title' => 'max:225',
+            'img' => 'image|file|max:3000',
+            'description' => 'min:100|max:10000',
+            'ticketAvailable' => '',
+            'seatAvailable' => '',
+            'status_id' => '',
+            'date' => '',
+            'time' => '',
+            'price' => ''
         ]);
         
         if($request->title != $film->title)
-        $request->validate(['title' => 'required|unique:films']);
+        $request->validate(['title' => 'required']);
+
+        if($request->file('img')) {
+            $request->file('img')->store('post-image');
+        }
+
+        $request['excerpt'] = Str::limit(strip_tags($request->description), 100);
 
         $film->update([
             'title' => $request->title,
+            'img' => $request->img,
             'description' => $request->description,
-            'price' => $request->price,
+            'ticketAvailable' => $request->ticketAvailable,
+            'seatAvailable' => $request->seatAvailable,
+            'status_id' => $request->status_id,
+            'date' => $request->date,
+            'time' => $request->time,
+            'price' => $request->price
         ]);
 
         return redirect('/datafilms');

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\FilmBooking;
+use App\Models\Film;
 use App\Models\User;
-use  Illuminate\Support\Facades\Hash;
+use App\Models\Genre;
 
-class AdminController extends Controller
+class FilmBookingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +17,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        
-        return view('admin.admins.index', [
-            'title' => 'Data Admin',
-            'admins' => User::latest()->filter(request(['search']))->paginate(10)
+        return view('admin.booking.index', [
+            'title' => 'Film Booking',
+            'bookings' => FilmBooking::all(),
+            'films' => Film::all(),
+            'users' => User::all()
         ]);
     }
 
@@ -29,9 +32,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.dashboard.create', [
-            'title' => 'Dashboard Admin'
-        ]);
+        //
     }
 
     /**
@@ -42,23 +43,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'fullname' => 'required',
-            'username' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'password' => 'required'
-        ]);
-
-        User::create([
-            'fullname' => $request->fullname,
-            'username' => $request->username,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),            
-        ]);
-
-        return redirect('/dashboardadmin');
+        //
     }
 
     /**
@@ -67,9 +52,16 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Film $film, User $user, $id)
     {
-        //
+        $film = Film::find($id);
+
+        return view('admin.booking.show', compact('film', 'user'), [
+            'title' => 'Dashboard Film',
+            'film' => $film,
+            'user' => User::find($id)
+
+        ]);
     }
 
     /**
@@ -103,8 +95,6 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
-
-        return redirect('/dashboardadmin')->with('success', 'Berhasil hapus data!');
+        //
     }
 }

@@ -11,6 +11,22 @@ class Film extends Model
 
     protected $guarded = ['id'];
 
+    public function genres() {
+        // return $this->belongsToMany(Genre::class);
+    }
+
+    public function status() {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function filmBooking() {
+        return $this->hasMany(FilmBooking::class);
+    }
+
+    public function user() {
+        return $this->belongsToMany(User::class);
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {

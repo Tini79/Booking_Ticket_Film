@@ -19,10 +19,18 @@ class User extends Authenticatable
      */
     protected $guarded = ['id'];
 
+    public function FilmBooking() {
+        return $this->hasMany(FilmBooking::class);
+    }
+
+    public function films() {
+        return $this->belongsToMany(Film::class);
+    }
+    
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
-            return $query->where('title', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%')->orWhere('price', 'like', '%' . $search . '%');
+            return $query->where('fullname', 'like', '%' . $search . '%')->orWhere('username', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%')->orWhere('phone', 'like', '%' . $search . '%');
         });
     }
 

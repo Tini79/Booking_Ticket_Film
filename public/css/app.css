@@ -4,3 +4,7 @@
 .clickable-link{color: rgba(0, 0, 0, .5)}
 .sub-brand-logo, .clickable-link:hover, .brand-logo:hover, .sub-brand-logo:hover, .icons:hover{color: #ffc800;}
 .sub-brand-logo{font-style:italic;}
+.film-img {height: 500px; width: 347.99px; overflow:hidden;}
+.post-film-img{max-height: 350px;}
+.show-film-img{max-height: 300px;}
+hr.dotted {border: none;border-top: 3px dotted #000; color: #000;background-color: #fff;height: 3px;width: 100%;}

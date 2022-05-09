@@ -1,7 +1,6 @@
 @extends('layouts.main')
 @section('content')
 <section class="page-section">
-    
     <div class="container mt-3 row justify-content-center">
         <div class="col-md-6">
             <form action="/login" method="post" class="shadow-sm p-4 border">

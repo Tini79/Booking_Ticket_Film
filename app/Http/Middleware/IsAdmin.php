@@ -15,19 +15,11 @@ class IsAdmin
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    // {
-    //     if(!auth()->check() || !auth()->user()->is_admin) {
-    //         abort(403);
-    //     }
-
-    //     return $next($request);
-    // }
 
     {
-        if(auth()->user()->is_admin == 1){
+        if(auth()->user()->is_admin === 1) {
             return $next($request);
-        }
-   
-        return redirect('/');
+        } 
+            return redirect('/');
     }
 }

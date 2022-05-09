@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         return view('/admin.users.index', [
             'title' => 'PlayFilm',
-            'users' => User::all()
+            'users' => User::latest()->filter(request(['search']))->paginate(10)
         ]);
     }
 
@@ -95,14 +95,22 @@ class UserController extends Controller
 
         $request->validate([
             'fullname' => 'max:255',
-            'username' => 'unique:users|min:3|max:255',
-            'email' => 'email|unique:users',
-            'phone' => 'unique:users',
-            'password' => 'min:5|max:255'
+            'username' => 'min:3|max:255',
+            'email' => 'email',
+            'phone' => '',
+            'password' => 'min:4|max:255'
         ]);
         
+        if($request->fullname != $user->fullname)
+        $request->validate(['fullname' => 'required|unique:users']);
         if($request->username != $user->username)
         $request->validate(['username' => 'required|unique:users']);
+        if($request->email != $user->email)
+        $request->validate(['email' => 'required|unique:users']);
+        if($request->phone != $user->phone)
+        $request->validate(['phone' => 'required|unique:users']);
+
+        $request->password = bcrypt($request->password);
 
         $user->update([
             'username' => $request->username,
